@@ -9,7 +9,7 @@ import java.util.*;
  * Please write a replacement
  */
 public class ShoppingCart implements IShoppingCart {
-    HashMap<String, Integer> contents = new HashMap<>();
+    LinkedHashMap<String, Integer> contents = new LinkedHashMap<>();
     Pricer pricer;
 
     public ShoppingCart(Pricer pricer) {
