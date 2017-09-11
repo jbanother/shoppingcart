@@ -43,13 +43,13 @@ public class ShoppingCartTest {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
         sc.addItem("apple", 2);
-        sc.addItem("bananna", 1);
+        sc.addItem("banana", 1);
 
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
 
         sc.printReceipt();
-        assertEquals("apple - 2 - €2.00\nbananna - 1 - €2.00\n", myOut.toString());
+        assertEquals("apple - 2 - €2.00\nbanana - 1 - €2.00\n", myOut.toString());
     }
 
         @Test
