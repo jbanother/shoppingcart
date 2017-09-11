@@ -22,7 +22,7 @@ public class ShoppingCartTest {
         System.setOut(new PrintStream(myOut));
 
         sc.printReceipt();
-        assertEquals(String.format("apple - 1 - €1.00%n"), myOut.toString());
+        assertEquals(String.format("apple - 1 - €1.00%nTotal - €1.00%n"), myOut.toString());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class ShoppingCartTest {
         System.setOut(new PrintStream(myOut));
 
         sc.printReceipt();
-        assertEquals(String.format("apple - 2 - €2.00%n"), myOut.toString());
+        assertEquals(String.format("apple - 2 - €2.00%nTotal - €2.00%n"), myOut.toString());
     }
 
     @Test
@@ -43,17 +43,17 @@ public class ShoppingCartTest {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
         sc.addItem("apple", 2);
-        sc.addItem("bananna", 1);
+        sc.addItem("banana", 1);
 
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
 
         sc.printReceipt();
         
-        assertEquals(String.format("apple - 2 - €2.00%nbananna - 1 - €2.00%n"), myOut.toString());
+        assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%nTotal - €4.00%n"), myOut.toString());
     }
 
-        @Test
+    @Test
     public void doesntExplodeOnMysteryItem() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
@@ -63,7 +63,7 @@ public class ShoppingCartTest {
         System.setOut(new PrintStream(myOut));
         
         sc.printReceipt();
-        assertEquals(String.format("crisps - 2 - €0.00%n"), myOut.toString());
+        assertEquals(String.format("crisps - 2 - €0.00%nTotal - €0.00%n"), myOut.toString());
     }
 }
 
