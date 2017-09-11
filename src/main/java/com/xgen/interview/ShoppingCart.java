@@ -31,15 +31,16 @@ public class ShoppingCart implements IShoppingCart {
         Integer total = 0;
         
         for (int i = 0; i < Array.getLength(keys) ; i++) {
-            Integer price = pricer.getPrice((String)keys[i]) * contents.get(keys[i]);
-            Float priceFloat = new Float(new Float(price) / 100);
+        	Integer price = pricer.getPrice((String)keys[i]) * contents.get(keys[i]);
+            
+            Float priceFloat = new Float(price / 100);
             String priceString = String.format("€%.2f", priceFloat);
             System.out.println(keys[i] + " - " + contents.get(keys[i]) + " - " + priceString);
             
-            total = price++;
+            total = total + price;
         }
         
-        Float totalFloat = new Float(new Float(total)/100);
+        Float totalFloat = new Float(total/100);
         String totalPriceString = String.format("€%.2f", totalFloat);
         System.out.println("Total - " + totalPriceString);
 
