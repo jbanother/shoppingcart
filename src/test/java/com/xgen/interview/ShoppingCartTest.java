@@ -50,16 +50,39 @@ public class ShoppingCartTest {
 
         sc.printReceipt();
 
-        String result = myOut.toString();
+        String[] lines = myOut.toString().split(String.format("%n"));
 
-        if (result.startsWith("apple")) {
-            assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%n"), result);
-        } else {
-            assertEquals(String.format("banana - 1 - €2.00%napple - 2 - €2.00%n"), result);
-        }
+        assertEquals("apple - 2 - €2.00", lines[0]);
+        assertEquals("banana - 1 - €2.00", lines[1]);
     }
 
-        @Test
+    @Test
+    public void preserveInsertionOrder() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        sc.addItem("apple", 1);
+        sc.addItem("banana", 1);
+        sc.addItem("avocado", 1);
+        sc.addItem("blueberry", 1);
+        sc.addItem("cherry", 1);
+        sc.addItem("kiwi", 1);
+
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        sc.printReceipt();
+
+        String[] lines = myOut.toString().split(String.format("%n"));
+
+        assertEquals("apple - 1 - €1.00", lines[0]);
+        assertEquals("banana - 1 - €2.00", lines[1]);
+        assertEquals("avocado - 1 - €3.00", lines[2]);
+        assertEquals("blueberry - 1 - €4.00", lines[3]);
+        assertEquals("cherry - 1 - €5.00", lines[4]);
+        assertEquals("kiwi - 1 - €6.00", lines[5]);
+    }
+
+    @Test
     public void doesntExplodeOnMysteryItem() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
