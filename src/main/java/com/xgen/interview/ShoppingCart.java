@@ -13,6 +13,10 @@ public class ShoppingCart implements IShoppingCart {
     Pricer pricer;
 
     public ShoppingCart(Pricer pricer) {
+        if (pricer == null) {
+            throw new NullPointerException("pricer cannot be null");
+        }
+
         this.pricer = pricer;
     }
 

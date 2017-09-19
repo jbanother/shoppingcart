@@ -121,6 +121,11 @@ public class ShoppingCartTest {
 
         assertEquals("total - €0.00", lines[0]);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void pricerNull() {
+        new ShoppingCart(null);
+    }
 }
 
 
