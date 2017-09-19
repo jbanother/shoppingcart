@@ -40,13 +40,13 @@ public class ShoppingCart implements IShoppingCart {
 
             totalPrice += priceFloat;
 
-            String priceString = String.format("€%.2f", priceFloat);
-
-            System.out.println(itemType + " - " + quantity + " - " + priceString);
+            System.out.println(itemType + " - " + quantity + " - " + formatMoney(priceFloat));
         }
 
-        String totalPriceString = String.format("€%.2f", totalPrice);
+        System.out.println("total - " + formatMoney(totalPrice));
+    }
 
-        System.out.println("total - " + totalPriceString);
+    private String formatMoney(Float value) {
+        return String.format("€%.2f", value); 
     }
 }
