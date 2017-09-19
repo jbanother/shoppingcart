@@ -26,15 +26,23 @@ public class ShoppingCart implements IShoppingCart {
     }
 
     public void printReceipt() {
+        Float totalPrice = 0f;
+
         for (Map.Entry<String,Integer> entry : contents.entrySet()) {
             String itemType = entry.getKey();
             Integer quantity = entry.getValue();
             Integer price = pricer.getPrice(itemType) * quantity;
             Float priceFloat = price / 100f;
 
+            totalPrice += priceFloat;
+
             String priceString = String.format("€%.2f", priceFloat);
 
             System.out.println(itemType + " - " + quantity + " - " + priceString);
         }
+
+        String totalPriceString = String.format("€%.2f", totalPrice);
+
+        System.out.println("total - " + totalPriceString);
     }
 }
