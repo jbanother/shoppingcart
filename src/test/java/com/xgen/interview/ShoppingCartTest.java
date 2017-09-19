@@ -64,6 +64,23 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void canAddNullItem() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        sc.addItem(null, 1);
+
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        sc.printReceipt();
+
+        String[] lines = myOut.toString().split(String.format("%n"));
+        
+        assertEquals("null - 1 - €0.00", lines[0]);
+        assertEquals("total - €0.00", lines[1]);
+    }
+
+    @Test
     public void canAddDifferentItems() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
