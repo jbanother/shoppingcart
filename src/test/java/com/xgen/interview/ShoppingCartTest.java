@@ -99,6 +99,25 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void preserveDecimalPlaces() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        sc.addItem("apple", 1);
+        sc.addItem("kiwi", 2);
+
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        sc.printReceipt();
+
+        String[] lines = myOut.toString().split(String.format("%n"));
+        
+        assertEquals("apple - 1 - €1.00", lines[0]);
+        assertEquals("kiwi - 2 - €12.24", lines[1]);
+        assertEquals("total - €13.24", lines[2]);
+    }
+
+    @Test
     public void preserveInsertionOrder() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
@@ -107,7 +126,6 @@ public class ShoppingCartTest {
         sc.addItem("avocado", 1);
         sc.addItem("blueberry", 1);
         sc.addItem("cherry", 1);
-        sc.addItem("kiwi", 1);
 
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
@@ -121,8 +139,7 @@ public class ShoppingCartTest {
         assertEquals("avocado - 1 - €3.00", lines[2]);
         assertEquals("blueberry - 1 - €4.00", lines[3]);
         assertEquals("cherry - 1 - €5.00", lines[4]);
-        assertEquals("kiwi - 1 - €6.00", lines[5]);
-        assertEquals("total - €21.00", lines[6]);
+        assertEquals("total - €15.00", lines[5]);
     }
 
     @Test

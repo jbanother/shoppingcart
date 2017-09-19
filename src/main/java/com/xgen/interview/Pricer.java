@@ -15,7 +15,7 @@ public class Pricer {
         pricingDatabase.put("avocado", 300);
         pricingDatabase.put("blueberry", 400);
         pricingDatabase.put("cherry", 500);
-        pricingDatabase.put("kiwi", 600);
+        pricingDatabase.put("kiwi", 612);
     }
 
     /**
