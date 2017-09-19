@@ -47,6 +47,23 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void canAddNegativeItem() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        sc.addItem("apple", -2);
+
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        sc.printReceipt();
+
+        String[] lines = myOut.toString().split(String.format("%n"));
+        
+        assertEquals("apple - -2 - €-2.00", lines[0]);
+        assertEquals("total - €-2.00", lines[1]);
+    }
+
+    @Test
     public void canAddDifferentItems() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
