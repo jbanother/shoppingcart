@@ -1,76 +1,96 @@
 package com.xgen.interview;
 
-import com.xgen.interview.Pricer;
-import com.xgen.interview.ShoppingCart;
+import com.xgen.interview.mock.MockReceiptPrinter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class ShoppingCartTest {
 
-    @Test
-    public void canAddAnItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+  private ShoppingCart shoppingCart;
+  private MockReceiptPrinter mockReceiptPrinter;
+  private Pricer pricer;
 
-        sc.addItem("apple", 1);
+  @Before
+  public void before() {
+    pricer = new Pricer();
+    mockReceiptPrinter = new MockReceiptPrinter();
+    shoppingCart = new ShoppingCart(pricer, mockReceiptPrinter);
+  }
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+  @Test
+  public void canAddAnItem() {
 
-        sc.printReceipt();
-        assertEquals(String.format("apple - 1 - €1.00%n"), myOut.toString());
-    }
+    shoppingCart.addItem("apple", 1);
 
-    @Test
-    public void canAddMoreThanOneItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
 
-        sc.addItem("apple", 2);
+    shoppingCart.printReceipt();
+    assertNotNull(mockReceiptPrinter.items);
+    assertEquals(1, mockReceiptPrinter.items.size());
+    assertEquals(item("apple", 1), mockReceiptPrinter.items.get(0));
+    assertEquals(pricer.getPrice("apple"), (Integer) mockReceiptPrinter.total);
+  }
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+  @Test
+  public void canAddMoreThanOneItem() {
 
-        sc.printReceipt();
-        assertEquals(String.format("apple - 2 - €2.00%n"), myOut.toString());
-    }
+    shoppingCart.addItem("apple", 2);
 
-    @Test
-    public void canAddDifferentItems() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
 
-        sc.addItem("apple", 2);
-        sc.addItem("banana", 1);
+    shoppingCart.printReceipt();
+    assertNotNull(mockReceiptPrinter.items);
+    assertEquals(1, mockReceiptPrinter.items.size());
+    assertEquals(item("apple", 2), mockReceiptPrinter.items.get(0));
+    assertEquals(pricer.getPrice("apple") * 2, mockReceiptPrinter.total);
+  }
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+  @Test
+  public void canAddDifferentItemsAndKeepOrder() {
 
-        sc.printReceipt();
+    shoppingCart.addItem("apple", 2);
+    shoppingCart.addItem("banana", 1);
 
-        String result = myOut.toString();
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
 
-        if (result.startsWith("apple")) {
-            assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%n"), result);
-        } else {
-            assertEquals(String.format("banana - 1 - €2.00%napple - 2 - €2.00%n"), result);
-        }
-    }
+    shoppingCart.printReceipt();
+    assertNotNull(mockReceiptPrinter.items);
+    assertEquals(2, mockReceiptPrinter.items.size());
+    assertEquals(item("apple", 2), mockReceiptPrinter.items.get(0));
+    assertEquals(item("banana", 1), mockReceiptPrinter.items.get(1));
+    assertEquals((pricer.getPrice("apple") * 2) + pricer.getPrice("banana"), mockReceiptPrinter.total);
+  }
 
-        @Test
-    public void doesntExplodeOnMysteryItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+  @Test
+  public void doesntExplodeOnMysteryItem() {
 
-        sc.addItem("crisps", 2);
+    shoppingCart.addItem("crisps", 1);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
 
-        sc.printReceipt();
-        assertEquals(String.format("crisps - 2 - €0.00%n"), myOut.toString());
-    }
+    shoppingCart.printReceipt();
+    assertNotNull(mockReceiptPrinter.items);
+    assertEquals(1, mockReceiptPrinter.items.size());
+    assertEquals(item("crisps", 1), mockReceiptPrinter.items.get(0));
+    assertEquals(0, mockReceiptPrinter.total);
+  }
+
+
+  private Receipt.Item item(String name, int quantity) {
+    return new Receipt.Item(new Product(name, pricer.getPrice(name)), quantity);
+  }
+
 }
 
 
