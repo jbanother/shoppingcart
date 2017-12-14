@@ -18,4 +18,20 @@ interface IShoppingCart {
    * it for tue customer
    */
   void printReceipt();
+
+  /**
+   * Return how many items we have in our shopping cart
+   */
+  int countItems();
+
+  /**
+   * Check if an item is in our shopping cart by returning how many there are,
+   * or 0 if none
+   */
+  int hasItem(String itemType);
+
+  /**
+   * Return the total cost of the items in the shopping cart
+   */
+  float getTotalCost();
 }
