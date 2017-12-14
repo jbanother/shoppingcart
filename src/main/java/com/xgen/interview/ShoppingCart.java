@@ -9,9 +9,21 @@ public class ShoppingCart implements IShoppingCart {
     int numberOfItems = 0;
 
     Pricer pricer;
+    IPrinter printer;
 
+    /**
+     * Backwards compatible constructor
+     */
     public ShoppingCart(Pricer pricer) {
+        this(pricer, new StandardOutPrinter());
+    }
+
+    /**
+     * New constructor to allow overriding the printer
+     */
+    public ShoppingCart(Pricer pricer, IPrinter printer) {
         this.pricer = pricer;
+        this.printer = printer;
     }
 
     /**
