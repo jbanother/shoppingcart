@@ -6,7 +6,9 @@ import java.util.*;
 public class ShoppingCart implements IShoppingCart {
     HashMap<String, Integer> contents = new HashMap<>();
     Queue<String> contentsOrder = new LinkedList<String>();
+
     int numberOfItems = 0;
+    float totalCost = 0.0f;
 
     Pricer pricer;
     IPrinter printer;
@@ -34,7 +36,9 @@ public class ShoppingCart implements IShoppingCart {
     public void addItem(String itemType, int number) {
         // Unkown item. I don't think we should assume a 0 priced item is unknown,
         // but that's how it is for now.
-        if (0 == this.pricer.getPrice(itemType)) {
+        int price = this.pricer.getPrice(itemType).intValue();
+
+        if (0 == price) {
             return;
         }
 
@@ -47,23 +51,28 @@ public class ShoppingCart implements IShoppingCart {
         }
 
         this.numberOfItems += number;
+        this.totalCost += (float)(price * number) / 100;
     }
 
     public void printReceipt() {
-        Object[] keys = contents.keySet().toArray();
-
-        float totalCost = 0.0f;
-
         for (String itemType : this.contentsOrder) {
-            Integer price = pricer.getPrice(itemType) * contents.get(itemType);
-            Float priceFloat = new Float(new Float(price) / 100);
-            String priceString = String.format("€%.2f", priceFloat);
-            totalCost += priceFloat;
-
-            this.printer.printLine(itemType + " - " + contents.get(itemType) + " - " + priceString);
+            this.printReceiptLineItem(itemType);
         }
 
-        this.printer.printLine(String.format("Total Cost - €%.2f", totalCost));
+        this.printReceiptTotal();
+    }
+
+    private void printReceiptLineItem(String itemType) {
+        int quantity = contents.get(itemType);
+
+        Integer price = pricer.getPrice(itemType) * quantity;
+        Float priceFloat = new Float(new Float(price) / 100);
+
+        this.printer.printLine(String.format("%s - %d - €%.2f", itemType, quantity, priceFloat));
+    }
+
+    private void printReceiptTotal() {
+        this.printer.printLine("Total Cost - €" + String.format("%.2f", this.totalCost));
     }
 
 	@Override
