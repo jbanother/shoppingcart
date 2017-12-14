@@ -53,11 +53,7 @@ public class ShoppingCartTest {
 
         String result = myOut.toString();
 
-        if (result.startsWith("apple")) {
-            assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%nTotal Cost - €4.00%n"), result);
-        } else {
-            assertEquals(String.format("banana - 1 - €2.00%napple - 2 - €2.00%nTotal Cost - €4.00%n"), result);
-        }
+        assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%nTotal Cost - €4.00%n"), result);
     }
 
     @Test
