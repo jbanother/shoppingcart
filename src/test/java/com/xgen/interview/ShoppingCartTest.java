@@ -12,17 +12,30 @@ import static org.junit.Assert.assertEquals;
 public class ShoppingCartTest {
 
     @Test
-    public void canAddAnItem() {
+    public void canCountTotalNumberOfItems() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        assertEquals(sc.countItems(), 0);
 
         sc.addItem("apple", 1);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+        assertEquals(sc.countItems(), 1);
 
-        sc.printReceipt();
+        sc.addItem("apple", 2);
 
-        assertEquals(String.format("apple - 1 - €1.00%nTotal Cost - €1.00%n"), myOut.toString());
+        assertEquals(sc.countItems(), 3);
+
+        sc.addItem("banana", 6);
+
+        assertEquals(sc.countItems(), 9);
+    }
+
+    @Test
+    public void canAddAnItem() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+        sc.addItem("apple", 1);
+
+        assertEquals(sc.hasItem("apple"), 1);
     }
 
     @Test
@@ -31,29 +44,12 @@ public class ShoppingCartTest {
 
         sc.addItem("apple", 2);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+        assertEquals(sc.hasItem("apple"), 2);
 
-        sc.printReceipt();
+        sc.addItem("banana", 5);
 
-        assertEquals(String.format("apple - 2 - €2.00%nTotal Cost - €2.00%n"), myOut.toString());
-    }
-
-    @Test
-    public void canAddDifferentItems() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
-
-        sc.addItem("apple", 2);
-        sc.addItem("banana", 1);
-
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
-        sc.printReceipt();
-
-        String result = myOut.toString();
-
-        assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%nTotal Cost - €4.00%n"), result);
+        assertEquals(sc.hasItem("apple"), 2);
+        assertEquals(sc.hasItem("banana"), 5);
     }
 
     @Test
@@ -62,10 +58,6 @@ public class ShoppingCartTest {
 
         sc.addItem("crisps", 2);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
-        sc.printReceipt();
-        assertEquals(String.format("crisps - 2 - €0.00%nTotal Cost - €0.00%n"), myOut.toString());
+        assertEquals(sc.countItems(), 0);
     }
 }
