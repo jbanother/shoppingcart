@@ -60,10 +60,10 @@ public class ShoppingCart implements IShoppingCart {
             String priceString = String.format("€%.2f", priceFloat);
             totalCost += priceFloat;
 
-            System.out.println(itemType + " - " + contents.get(itemType) + " - " + priceString);
+            this.printer.printLine(itemType + " - " + contents.get(itemType) + " - " + priceString);
         }
 
-        System.out.println(String.format("Total Cost - €%.2f", totalCost));
+        this.printer.printLine(String.format("Total Cost - €%.2f", totalCost));
     }
 
 	@Override

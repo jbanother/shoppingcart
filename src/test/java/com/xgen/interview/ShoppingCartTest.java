@@ -60,4 +60,17 @@ public class ShoppingCartTest {
 
         assertEquals(sc.countItems(), 0);
     }
+
+    @Test
+    public void canPrintAReceipt() {
+        ShoppingCart sc = new ShoppingCart(new Pricer(), new StandardOutPrinter());
+
+        sc.addItem("apple", 1);
+
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        sc.printReceipt();
+        assertEquals(String.format("apple - 1 - €1.00%nTotal Cost - €1.00%n"), myOut.toString());
+    }
 }
