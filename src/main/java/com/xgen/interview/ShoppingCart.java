@@ -75,6 +75,11 @@ public class ShoppingCart implements IShoppingCart {
         this.printer.printLine("Total Cost - €" + String.format("%.2f", this.totalCost));
     }
 
+    @Override
+    public float getTotalCost() {
+        return this.totalCost;
+    }
+
 	@Override
 	public int countItems() {
 		return this.numberOfItems;

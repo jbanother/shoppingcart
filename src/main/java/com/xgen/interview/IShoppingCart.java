@@ -29,4 +29,9 @@ interface IShoppingCart {
    * or 0 if none
    */
   int hasItem(String itemType);
+
+  /**
+   * Return the total cost of the items in the shopping cart
+   */
+  float getTotalCost();
 }

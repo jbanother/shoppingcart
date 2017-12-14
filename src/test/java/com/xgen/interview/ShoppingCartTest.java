@@ -62,6 +62,25 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void canMaintainRunningTotalCost() {
+        ShoppingCart sc = new ShoppingCart(new Pricer());
+
+        assertEquals(sc.getTotalCost(), 0.0f, 0);
+
+        sc.addItem("apple", 1);
+
+        assertEquals(sc.getTotalCost(), 1.0f, 0);
+
+        sc.addItem("apple", 2);
+
+        assertEquals(sc.getTotalCost(), 3.0f, 0);
+
+        sc.addItem("banana", 6);
+
+        assertEquals(sc.getTotalCost(), 15.0f, 0);
+    }
+
+    @Test
     public void canPrintAReceipt() {
         ShoppingCart sc = new ShoppingCart(new Pricer(), new StandardOutPrinter());
 
