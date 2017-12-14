@@ -3,6 +3,9 @@ package com.xgen.interview;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import com.xgen.interview.printers.IPrinter;
+import com.xgen.interview.printers.StandardOutPrinter;
+
 public class ShoppingCart implements IShoppingCart {
     HashMap<String, Integer> contents = new HashMap<>();
     Queue<String> contentsOrder = new LinkedList<String>();

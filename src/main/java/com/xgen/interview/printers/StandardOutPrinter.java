@@ -1,5 +1,5 @@
 
-package com.xgen.interview;
+package com.xgen.interview.printers;
 
 public class StandardOutPrinter implements IPrinter {
 
