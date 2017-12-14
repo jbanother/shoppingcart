@@ -3,6 +3,7 @@ package com.xgen.interview;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import com.xgen.interview.pricers.IPricer;
 import com.xgen.interview.printers.IPrinter;
 import com.xgen.interview.printers.StandardOutPrinter;
 
@@ -13,20 +14,20 @@ public class ShoppingCart implements IShoppingCart {
     int numberOfItems = 0;
     float totalCost = 0.0f;
 
-    Pricer pricer;
+    IPricer pricer;
     IPrinter printer;
 
     /**
      * Backwards compatible constructor
      */
-    public ShoppingCart(Pricer pricer) {
+    public ShoppingCart(IPricer pricer) {
         this(pricer, new StandardOutPrinter());
     }
 
     /**
      * New constructor to allow overriding the printer
      */
-    public ShoppingCart(Pricer pricer, IPrinter printer) {
+    public ShoppingCart(IPricer pricer, IPrinter printer) {
         this.pricer = pricer;
         this.printer = printer;
     }
