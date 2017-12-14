@@ -2,6 +2,7 @@ package com.xgen.interview;
 
 import com.xgen.interview.printers.StandardOutPrinter;
 import com.xgen.interview.pricers.Pricer;
+import com.xgen.interview.pricers.RandomPricer;
 import com.xgen.interview.ShoppingCart;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canCountTotalNumberOfItems() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(new RandomPricer());
 
         assertEquals(sc.countItems(), 0);
 
@@ -34,7 +35,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canAddAnItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(new RandomPricer());
         sc.addItem("apple", 1);
 
         assertEquals(sc.hasItem("apple"), 1);
@@ -42,7 +43,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canAddMoreThanOneItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(new RandomPricer());
 
         sc.addItem("apple", 2);
 
@@ -56,7 +57,7 @@ public class ShoppingCartTest {
 
     @Test
     public void doesntExplodeOnMysteryItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(new RandomPricer());
 
         sc.addItem("crisps", 2);
 
@@ -65,21 +66,28 @@ public class ShoppingCartTest {
 
     @Test
     public void canMaintainRunningTotalCost() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        RandomPricer randomPricer = new RandomPricer();
+
+        ShoppingCart sc = new ShoppingCart(randomPricer);
+
+        int appleCost = randomPricer.getPrice("apple");
+        int bananaCost = randomPricer.getPrice("banana");
 
         assertEquals(sc.getTotalCost(), 0.0f, 0);
 
         sc.addItem("apple", 1);
 
-        assertEquals(sc.getTotalCost(), 1.0f, 0);
+        assertEquals(sc.getTotalCost(), (float)(appleCost * 1) / 100, 0);
 
         sc.addItem("apple", 2);
 
-        assertEquals(sc.getTotalCost(), 3.0f, 0);
+        assertEquals(sc.getTotalCost(), (float)(appleCost * 3) / 100, 0);
 
         sc.addItem("banana", 6);
 
-        assertEquals(sc.getTotalCost(), 15.0f, 0);
+        float totalCost = (float) ((appleCost * 3) + (bananaCost * 6)) / 100;
+
+        assertEquals(sc.getTotalCost(), totalCost, 0);
     }
 
     @Test

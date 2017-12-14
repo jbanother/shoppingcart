@@ -69,8 +69,7 @@ public class ShoppingCart implements IShoppingCart {
     private void printReceiptLineItem(String itemType) {
         int quantity = contents.get(itemType);
 
-        Integer price = pricer.getPrice(itemType) * quantity;
-        Float priceFloat = new Float(new Float(price) / 100);
+        float priceFloat = (float)(this.pricer.getPrice(itemType) * quantity) / 100;
 
         this.printer.printLine(String.format("%s - %d - €%.2f", itemType, quantity, priceFloat));
     }
