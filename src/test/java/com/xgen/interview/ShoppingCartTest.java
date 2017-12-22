@@ -2,6 +2,7 @@ package com.xgen.interview;
 
 import com.xgen.interview.carts.IShoppingCart;
 import com.xgen.interview.carts.ShoppingCart;
+import com.xgen.interview.mocks.MockDisplayer;
 import com.xgen.interview.pricers.Pricer;
 import org.junit.Test;
 

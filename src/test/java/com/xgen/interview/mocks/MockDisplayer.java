@@ -1,4 +1,4 @@
-package com.xgen.interview;
+package com.xgen.interview.mocks;
 
 import com.xgen.interview.displayers.IDisplayer;
 import org.junit.Assert;
