@@ -1,76 +1,100 @@
 package com.xgen.interview;
 
-import com.xgen.interview.Pricer;
-import com.xgen.interview.ShoppingCart;
+import com.xgen.interview.carts.IShoppingCart;
+import com.xgen.interview.carts.ShoppingCart;
+import com.xgen.interview.pricers.Pricer;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.junit.Assert.assertEquals;
-
+import java.util.*;
 
 public class ShoppingCartTest {
 
+    private IShoppingCart createShoppingCart(Queue<String> itemsToScan) {
+        return new ShoppingCart(new Pricer(), new MockDisplayer(itemsToScan));
+    }
+
     @Test
     public void canAddAnItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("apple - 1 - €1.00");
+        expectedResults.add("Total: €1.00");
+        IShoppingCart sc = createShoppingCart(expectedResults);
 
         sc.addItem("apple", 1);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
         sc.printReceipt();
-        assertEquals(String.format("apple - 1 - €1.00%n"), myOut.toString());
     }
 
     @Test
     public void canAddMoreThanOneItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("apple - 2 - €2.00");
+        expectedResults.add("Total: €2.00");
+        IShoppingCart sc = createShoppingCart(expectedResults);
 
         sc.addItem("apple", 2);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
         sc.printReceipt();
-        assertEquals(String.format("apple - 2 - €2.00%n"), myOut.toString());
     }
 
     @Test
     public void canAddDifferentItems() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("apple - 2 - €2.00");
+        expectedResults.add("banana - 1 - €2.00");
+        expectedResults.add("Total: €4.00");
+        IShoppingCart sc = createShoppingCart(expectedResults);
 
         sc.addItem("apple", 2);
         sc.addItem("banana", 1);
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
         sc.printReceipt();
-
-        String result = myOut.toString();
-
-        if (result.startsWith("apple")) {
-            assertEquals(String.format("apple - 2 - €2.00%nbanana - 1 - €2.00%n"), result);
-        } else {
-            assertEquals(String.format("banana - 1 - €2.00%napple - 2 - €2.00%n"), result);
-        }
     }
 
-        @Test
+    @Test
+    public void keepsScanOrder() {
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("banana - 11 - €22.00");
+        expectedResults.add("cheese - 1 - €0.00");
+        expectedResults.add("apple - 19 - €19.00");
+        expectedResults.add("Total: €41.00");
+
+        IShoppingCart sc = createShoppingCart(expectedResults);
+
+        sc.addItem("apple", 1);
+        sc.addItem("banana", 3);
+        sc.addItem("apple", 7);
+        sc.addItem("banana", 1);
+        sc.addItem("banana", 1);
+        sc.addItem("banana", 1);
+        sc.addItem("apple", 1);
+        sc.addItem("apple", 9);
+        sc.addItem("banana", 5);
+        sc.addItem("cheese", 1);
+        sc.addItem("apple", 1);
+
+        sc.printReceipt();
+    }
+
+    @Test
+    public void doesntChargeIfNothingWasScanned() {
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("Total: €0.00");
+
+        IShoppingCart sc = createShoppingCart(expectedResults);
+
+        sc.printReceipt();
+    }
+
+    @Test
     public void doesntExplodeOnMysteryItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        Queue<String> expectedResults = new LinkedList<>();
+        expectedResults.add("crisps - 2 - €0.00");
+        expectedResults.add("Total: €0.00");
+
+        IShoppingCart sc = createShoppingCart(expectedResults);
 
         sc.addItem("crisps", 2);
-
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
         sc.printReceipt();
-        assertEquals(String.format("crisps - 2 - €0.00%n"), myOut.toString());
     }
 }
-
-
