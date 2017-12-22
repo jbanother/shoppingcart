@@ -1,10 +1,10 @@
-package com.xgen.interview;
+package com.xgen.interview.carts;
 
 /**
  * This is the interface used by the existing shopping tills in our supermarket
  * It cannot be changed without upgrading/replacing legacy hardware.
  */
-interface IShoppingCart {
+public interface IShoppingCart {
 
   /**
    * Called once for every item/collection of items that is scanned by the till.
