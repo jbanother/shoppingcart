@@ -1,6 +1,6 @@
 package com.xgen.interview;
 
-public class EuroPriceFormatter implements IPricerFormatter {
+public class EuroPriceFormatter implements IPriceFormatter {
     public String FormattedPrice(int price) {
         Float priceFloat;
         if (price > 0) {
