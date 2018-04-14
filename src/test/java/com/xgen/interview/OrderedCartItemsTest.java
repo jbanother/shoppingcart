@@ -1,9 +1,5 @@
 package com.xgen.interview;
 
-import com.xgen.interview.Pricer;
-import com.xgen.interview.OrderedCartItems;
-
-import java.util.ArrayList;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

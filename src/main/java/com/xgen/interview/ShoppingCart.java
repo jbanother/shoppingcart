@@ -5,8 +5,9 @@ import java.util.*;
 
 
 /**
- * This is the current implementation of ShoppingCart.
- * Please write a replacement
+ * I have removed the HashMap, I know it does not guarantee order and there is a requirment to have items in order
+ * In doing so I know we now do not group items but have made the decision not group items. If this requirement is needed
+ * it can be added in the future
  */
 public class ShoppingCart implements IShoppingCart {
     HashMap<String, Integer> contents = new HashMap<>();
