@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * A stub implementation - for this exercise, you may disregard that this is incomplete.
  */
-public class Pricer {
+public class Pricer implements IPricer {
     HashMap<String, Integer> pricingDatabase = new HashMap<>(); // stub
 
     public Pricer() {
