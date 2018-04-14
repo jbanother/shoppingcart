@@ -12,6 +12,11 @@ public class ReceiptWithTotal implements IReceipt {
         this.priceFormatter = priceFormatter;
     }
 
+    /**
+     * Returns the lines of the receipt with the item, quantity and price
+     * Returns a total line at the end with the total value of all the items
+     * Uses the priceFormatter to format the prices
+     */
     public ArrayList<String> GenerateContents(ICartItems cartItems) {
         ArrayList<String> contents = new ArrayList<>();
         for (CartItem item : cartItems.Items()) {
