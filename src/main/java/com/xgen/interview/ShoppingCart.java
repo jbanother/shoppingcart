@@ -9,10 +9,10 @@ import java.util.*;
  * Please write a replacement
  */
 public class ShoppingCart implements IShoppingCart {
-    HashMap<String, Integer> contents = new HashMap<>();
-    Pricer pricer;
+    private final Map<String, Integer> contents = new LinkedHashMap<>();
+    private IPricer pricer;
 
-    public ShoppingCart(Pricer pricer) {
+    public ShoppingCart(IPricer pricer) {
         this.pricer = pricer;
     }
 
