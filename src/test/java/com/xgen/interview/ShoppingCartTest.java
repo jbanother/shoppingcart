@@ -14,7 +14,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canAddAnItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(new Pricer("€"));
 
         sc.addItem("apple", 1);
 
@@ -27,7 +27,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canAddMoreThanOneItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(PricerFactory.getPricer());
 
         sc.addItem("apple", 2);
 
@@ -40,7 +40,7 @@ public class ShoppingCartTest {
 
     @Test
     public void canAddDifferentItems() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(PricerFactory.getPricer());
 
         sc.addItem("apple", 2);
         sc.addItem("banana", 1);
@@ -61,7 +61,7 @@ public class ShoppingCartTest {
 
         @Test
     public void doesntExplodeOnMysteryItem() {
-        ShoppingCart sc = new ShoppingCart(new Pricer());
+        ShoppingCart sc = new ShoppingCart(PricerFactory.getPricer());
 
         sc.addItem("crisps", 2);
 

@@ -9,8 +9,15 @@ import java.util.HashMap;
  */
 public class Pricer implements IPricer {
     private final Map<String, Integer> pricingDatabase = new HashMap<>(); // stub
+    private final String currency;
 
-    public Pricer() {
+    public Pricer(String currency) {
+        this.currency = currency;
+    }
+
+    @Override
+    public String getCurrency() {
+        return this.currency;
     }
 
     @Override

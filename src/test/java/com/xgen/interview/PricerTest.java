@@ -1,5 +1,6 @@
 package com.xgen.interview;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
@@ -11,10 +12,15 @@ import static org.junit.Assert.assertArrayEquals;
 
 
 public class PricerTest {
+    private Pricer pricer;
+
+    @Before
+    public void initialize() {
+        pricer = new Pricer("$");
+    }
 
     @Test
     public void testAddNewItem() {
-        Pricer pricer = new Pricer();
         pricer.addOrUpdatePrice("new_item", 20);
         assertEquals(pricer.getItems().size(), 1);
         assertEquals(pricer.getPrice("new_item").intValue(), 2000);
@@ -22,7 +28,6 @@ public class PricerTest {
 
     @Test
     public void testUpdateExistingItem() {
-        Pricer pricer = new Pricer();
         pricer.addOrUpdatePrice("item", 20);
         assertEquals(pricer.getItems().size(), 1);
         assertEquals(pricer.getPrice("item").intValue(), 2000);
@@ -34,20 +39,17 @@ public class PricerTest {
 
     @Test
     public void testGetPriceExistingItem() {
-        Pricer pricer = new Pricer();
         pricer.addOrUpdatePrice("item", 20);
         assertEquals(pricer.getPrice("item").intValue(), 2000);
     }
 
     @Test
     public void testGetPriceUnavailableItem() {
-        Pricer pricer = new Pricer();
         assertEquals(pricer.getPrice("item").intValue(), 0);
     }
 
     @Test
     public void testRemoveExistingItem() {
-        Pricer pricer = new Pricer();
         pricer.addOrUpdatePrice("apple", 20);
         assertEquals(pricer.getItems().size(), 1);
         assertEquals(pricer.getPrice("apple").intValue(), 2000);
@@ -59,7 +61,6 @@ public class PricerTest {
 
     @Test
     public void testRemoveUnavailableItem() {
-        Pricer pricer = new Pricer();
         pricer.initialize();
         assertEquals(pricer.getItems().size(), 2);
 
@@ -69,7 +70,6 @@ public class PricerTest {
 
     @Test
     public void testGetItems() {
-        Pricer pricer = new Pricer();
         pricer.initialize();
         Map<String, Integer> items = pricer.getItems();
         assertEquals(items.size(), 2);
@@ -81,8 +81,12 @@ public class PricerTest {
 
     @Test
     public void testGetItemsOnEmptyPricer() {
-        Pricer pricer = new Pricer();
         assertEquals(pricer.getItems().size(), 0);
     }
 
+    @Test
+    public void testGetCurrency() {
+        Pricer newPricer = new Pricer("€");
+        assertEquals(newPricer.getCurrency(), "€");
+    }
 }

@@ -6,6 +6,11 @@ import java.util.Map;
  * This is the interface used by the existing shopping cart as pricing database
  */
 public interface IPricer {
+    /**
+     * returns currency value
+     * @return currency symbol
+     */
+    String getCurrency();
 
     /**
      * initializes pricing database
