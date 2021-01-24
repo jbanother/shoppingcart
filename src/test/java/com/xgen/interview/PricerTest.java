@@ -71,7 +71,7 @@ public class PricerTest {
     @Test
     public void testGetItems() {
         pricer.initialize();
-        Map<String, Integer> items = pricer.getItems();
+        Map<String, Float> items = pricer.getItems();
         assertEquals(items.size(), 2);
 
         Object[] itemKeys = items.keySet().toArray();

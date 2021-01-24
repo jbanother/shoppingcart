@@ -22,14 +22,14 @@ public interface IPricer {
      * @param itemType an item to be added or updated
      * @param price the price of the item
      */
-    void addOrUpdatePrice(String itemType, int price);
+    void addOrUpdatePrice(String itemType, float price);
 
     /**
      * returns price of an item if item exists
      * @param itemType an item stored in database
      * @return integer unit price for the item
      */
-    Integer getPrice(String itemType);
+    Float getPrice(String itemType);
 
     /**
      * removes an item from the data store
@@ -41,7 +41,7 @@ public interface IPricer {
      * returns all items stored in pricing db
      * @return return dictionary of <item, price>
      */
-    Map<String, Integer> getItems();
+    Map<String, Float> getItems();
 
 
 }

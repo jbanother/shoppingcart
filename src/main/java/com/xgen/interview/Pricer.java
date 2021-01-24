@@ -8,7 +8,7 @@ import java.util.HashMap;
  * A stub implementation - for this exercise, you may disregard that this is incomplete.
  */
 public class Pricer implements IPricer {
-    private final Map<String, Integer> pricingDatabase = new HashMap<>(); // stub
+    private final Map<String, Float> pricingDatabase = new HashMap<>(); // stub
     private final String currency;
 
     public Pricer(String currency) {
@@ -21,7 +21,7 @@ public class Pricer implements IPricer {
     }
 
     @Override
-    public void addOrUpdatePrice(String itemType, int price) {
+    public void addOrUpdatePrice(String itemType, float price) {
         pricingDatabase.put(itemType, price);
     }
 
@@ -30,9 +30,9 @@ public class Pricer implements IPricer {
      * If itemType is an unknown string, store policy is that the item is free.
      */
     @Override
-    public Integer getPrice(String itemType) {
+    public Float getPrice(String itemType) {
         if (!pricingDatabase.containsKey(itemType)) {
-            return 0;
+            return 0.0f;
         }
         return pricingDatabase.get(itemType) * 100;
     }
@@ -43,13 +43,13 @@ public class Pricer implements IPricer {
     }
 
     @Override
-    public Map<String, Integer> getItems() {
+    public Map<String, Float> getItems() {
         return new HashMap<>(pricingDatabase);
     }
 
     @Override
     public void initialize() {
-        pricingDatabase.put("apple", 100);
-        pricingDatabase.put("banana", 200);
+        pricingDatabase.put("apple", 1.0f);
+        pricingDatabase.put("banana", 2.0f);
     }
 }
