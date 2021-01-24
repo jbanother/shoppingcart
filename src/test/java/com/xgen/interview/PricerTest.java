@@ -20,10 +20,21 @@ public class PricerTest {
     }
 
     @Test
+    public void testPriceFormat() {
+        pricer.addOrUpdatePrice("new_item", 20);
+        assertEquals(pricer.getPriceFormat(), "$%.2f");
+    }
+
+    @Test
     public void testAddNewItem() {
         pricer.addOrUpdatePrice("new_item", 20);
         assertEquals(pricer.getItems().size(), 1);
         assertEquals(pricer.getPrice("new_item").intValue(), 2000);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativePrice() {
+        pricer.addOrUpdatePrice("new_item", -20);
     }
 
     @Test

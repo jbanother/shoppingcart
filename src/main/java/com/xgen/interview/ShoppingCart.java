@@ -11,35 +11,47 @@ import java.util.*;
 public class ShoppingCart implements IShoppingCart {
     private final Map<String, Integer> contents = new LinkedHashMap<>();
     private IPricer pricer;
-    private String priceFormat;
+    private String priceFormat; // examples : "$4.09", "€2.1"
 
     public ShoppingCart(IPricer pricer) {
         this.pricer = pricer;
     }
 
     /**
-     * adds an item
+     * adds an item if item is new
+     * updates quantity of an item if item exists
+     * negative quantity is tolerated if resulting item count is more or equal to zero
+     * otherwise throws RuntimeException
      * @param itemType - The item being scanned by the hardware
      * @param number - The number of items the cashier is moving to the bagging area
+     * @throws RuntimeException if quantity becomes negative
      */
     public void addItem(String itemType, int number) {
-        if (!validatePricer()) {
-            return;
-        }
+        validatePricer();
+
         int newCount = 0;
         if (!contents.containsKey(itemType)) {
             newCount = number;
         } else {
             newCount = contents.get(itemType) + number;
         }
+        if (newCount < 0) {
+            throw new RuntimeException("quantity can not be zero");
+        }
         contents.put(itemType, newCount);
     }
 
+    /**
+     * prints receipt of items, with total at the line
+     * item line : <item_name> - <quantity> - <total_price_with_currency>
+     * total line : Total - <total_cart_price_with_currency>
+     * @throws IllegalArgumentException if pricer is invalid
+     */
     public void printReceipt() {
-        if (!validatePricer()) {
-            return;
-        }
+        validatePricer();
+
         Float totalPrice = 0.0f;
+        String priceFormat = pricer.getPriceFormat();
         StringBuilder receiptBuilder = new StringBuilder();
 
         for (Map.Entry<String, Integer> itemEntry : contents.entrySet()) {
@@ -58,13 +70,12 @@ public class ShoppingCart implements IShoppingCart {
         System.out.println(receiptBuilder);
     }
 
-    private boolean validatePricer() {
+    /**
+     * validates if pricer exists
+     */
+    private void validatePricer() {
         if (this.pricer == null) {
-            return false;
+            throw new IllegalArgumentException("pricer can not be null");
         }
-        if (this.priceFormat == null) {
-            this.priceFormat = pricer.getCurrency() + "%.2f";
-        }
-        return true;
     }
 }

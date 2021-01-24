@@ -10,9 +10,11 @@ import java.util.HashMap;
 public class Pricer implements IPricer {
     private final Map<String, Float> pricingDatabase = new HashMap<>(); // stub
     private final String currency;
+    private final String priceFormat;
 
     public Pricer(String currency) {
         this.currency = currency;
+        this.priceFormat = this.currency + "%.2f";
     }
 
     @Override
@@ -21,7 +23,15 @@ public class Pricer implements IPricer {
     }
 
     @Override
+    public String getPriceFormat() {
+        return this.priceFormat;
+    }
+
+    @Override
     public void addOrUpdatePrice(String itemType, float price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("price can not be negative");
+        }
         pricingDatabase.put(itemType, price);
     }
 

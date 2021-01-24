@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 
 public class ShoppingCartTest {
@@ -23,14 +22,10 @@ public class ShoppingCartTest {
         sc = new ShoppingCart(pricer);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void invalidPricer() throws IOException {
         ShoppingCart cart = new ShoppingCart(null);
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
-        cart.printReceipt();
-        assertEquals(dataLines(myOut).length, 0);
+        cart.addItem("item", 1);
     }
 
     @Test
@@ -53,6 +48,12 @@ public class ShoppingCartTest {
         sc.printReceipt();
 
         assertEquals(String.format("apple - 1 - €1.00"), dataLines(myOut)[0]);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void cantMakeQuantityNegative() throws IOException {
+        sc.addItem("apple", 1);
+        sc.addItem("apple", -2);
     }
 
     @Test

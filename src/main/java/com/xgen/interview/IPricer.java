@@ -13,6 +13,13 @@ public interface IPricer {
     String getCurrency();
 
     /**
+     * returns <currency%.2f>
+     * examples : "$4.09", "€2.1"
+     * @return price formatting
+     */
+    String getPriceFormat();
+
+    /**
      * initializes pricing database
      */
     void initialize();
