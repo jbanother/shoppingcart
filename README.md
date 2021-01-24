@@ -47,6 +47,22 @@ Please note; there are no intentional tricks/traps in this project. Please work-
   - total cart price will update if pricer state updates
   - handles different currency well
   
+### Some salient points
+- total price is calculated at the time of receipt creation
+  - in the initial commits, I had persisted total price at the time of item add
+  - that approach was taken to save some computational work during printReceipt
+    - the assumption was, item addition/deletion will happen only finite times, during an alive shopping session
+    - print receipt can be printed many times, long after shopping is over
+  - this approach was wrong, as we allowed Pricer state to chage
+    - updated item price won't be reflected if price changes, and we don't update the total price
+    - as the original method already had a O(n) loop (n - number of items), we are not adding any extra cost if we calculate the total price at the time of receipt generation
+  - edge case : item was bought at older price, receipt generated later shows a new price
+    - to avoid this scenario, we need to clone pricer instance at the time of ShoppingCart creation
+    - that will force us to delete a shopping cart if pricer adds new item during shopping session
+    - will require us to look up if cloned pricer was dirty
+
+I assumed we are not handling this level of complexity for this assignment.
+
 ## Improvements can be made
 
 - Remove the assumption that infinite quantity of items are available
@@ -59,5 +75,7 @@ Please note; there are no intentional tricks/traps in this project. Please work-
 - Allow multiple/batch item add
 - Add time of purchase/receipt creation
 - Add store information to ShoppingCart class
-- Customize receipt format via a decorator 
+- Customize receipt format via a decorator
+- A class for receipt
+- Data store for receipt
 
