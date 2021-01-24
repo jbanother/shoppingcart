@@ -11,13 +11,10 @@ import java.util.*;
 public class ShoppingCart implements IShoppingCart {
     private final Map<String, Integer> contents = new LinkedHashMap<>();
     private IPricer pricer;
-    private Float totalPrice;
-    private final String priceFormat;
+    private String priceFormat;
 
     public ShoppingCart(IPricer pricer) {
         this.pricer = pricer;
-        this.priceFormat = pricer.getCurrency() + "%.2f";
-        this.totalPrice = 0.0f;
     }
 
     /**
@@ -26,25 +23,30 @@ public class ShoppingCart implements IShoppingCart {
      * @param number - The number of items the cashier is moving to the bagging area
      */
     public void addItem(String itemType, int number) {
-        int oldCount = 0;
+        if (!validatePricer()) {
+            return;
+        }
         int newCount = 0;
         if (!contents.containsKey(itemType)) {
             newCount = number;
         } else {
-            oldCount = contents.get(itemType);
-            newCount = oldCount + number;
+            newCount = contents.get(itemType) + number;
         }
         contents.put(itemType, newCount);
-        updateTotalPrice(itemType, oldCount, newCount);
     }
 
     public void printReceipt() {
+        if (!validatePricer()) {
+            return;
+        }
+        Float totalPrice = 0.0f;
         StringBuilder receiptBuilder = new StringBuilder();
 
         for (Map.Entry<String, Integer> itemEntry : contents.entrySet()) {
             String item = itemEntry.getKey();
             int quantity = itemEntry.getValue();
             Float price = ((pricer.getPrice(item) / 100.0f) * quantity) ;
+            totalPrice += price;
             receiptBuilder.append(item)
                     .append(" - ")
                     .append(quantity)
@@ -56,9 +58,13 @@ public class ShoppingCart implements IShoppingCart {
         System.out.println(receiptBuilder);
     }
 
-    private void updateTotalPrice(String itemType, int oldItemCount, int newItemCount) {
-        Float itemPrice = pricer.getPrice(itemType) / 100.f;
-        this.totalPrice -= itemPrice * oldItemCount;
-        this.totalPrice += itemPrice * newItemCount;
+    private boolean validatePricer() {
+        if (this.pricer == null) {
+            return false;
+        }
+        if (this.priceFormat == null) {
+            this.priceFormat = pricer.getCurrency() + "%.2f";
+        }
+        return true;
     }
 }
