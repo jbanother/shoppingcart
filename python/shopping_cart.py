@@ -1,6 +1,5 @@
-import collections
 from abc import ABC, abstractmethod
-import sys
+from typing import Dict
 
 from shopping_cart_interface import IShoppingCart
 from pricer import Pricer
@@ -12,7 +11,7 @@ class ShoppingCart(IShoppingCart):
     """
     def __init__(self, pricer: Pricer):
         self.pricer = pricer
-        self._contents: dict = collections.OrderedDict()
+        self._contents: Dict[str,int] = {}
 
     def add_item(self, item_type: str, number: int):
         # adds new item to or update existing item in the shopping cart
@@ -49,5 +48,3 @@ class ShoppingCartConcreteCreator(ShoppingCartCreator):
     def factory_method(self) -> ShoppingCart:
         # returns ShoppingCart object
         return ShoppingCart(Pricer())
-
-

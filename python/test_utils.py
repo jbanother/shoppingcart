@@ -3,6 +3,9 @@ import sys
 
 class Capturing(list):
     """ Helper for capturing the output receipts"""
+    _stdout = None
+    _stringio = None
+
     def __enter__(self):
         self._stdout = sys.stdout
         sys.stdout = self._stringio = StringIO()
