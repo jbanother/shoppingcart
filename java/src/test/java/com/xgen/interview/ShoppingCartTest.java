@@ -59,7 +59,7 @@ public class ShoppingCartTest {
         }
     }
 
-        @Test
+    @Test
     public void doesntExplodeOnMysteryItem() {
         ShoppingCart sc = new ShoppingCart(new Pricer());
 
