@@ -27,8 +27,8 @@ Send us a link to a git repo, a zip file with your changes or a .patch file.
 ## Java implementation
 
 ### Dependencies
-  gradle 6
-  https://gradle.org/next-steps/?version=6.9.2&format=bin
+  [JDK 11](https://adoptium.net/en-GB/temurin/releases?version=11)
+  [gradle 7.5](https://gradle.org/next-steps/?version=7.5.1&format=bin)
 
 ### Build
 ```
